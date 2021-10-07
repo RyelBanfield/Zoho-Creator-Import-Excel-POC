@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
+
+<body>
+  <select id="sheet-type">
+    <option value="">Select Excel Sheet Type</option>
+    <option value="Customers-Salespersons">
+      Customers & Salespersons Sheet
+    </option>
+    <option value="Sales">Sales Sheet</option>
+  </select>
+  <br />
+  <br />
+  <input type="file" id="chooseFile" accept=".xlsx" disabled />
+  <br />
+  <br />
+  <button type="button" id="extractData" disabled>Extract data</button>
+  <br />
+  <br />
+  <button type="button" id="getRecords">Get records</button>
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.3/xlsx.full.min.js"></script>
+  <script type="text/javascript" src="https://js.zohostatic.com/creator/widgets/version/1.0/widgetsdk-min.js"></script>
+  <script src="app.js"></script>
+</body>
+
+</html>
