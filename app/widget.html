@@ -9,25 +9,16 @@
 </head>
 
 <body>
-  <select id="sheet-type">
-    <option value="">Select Excel Sheet Type</option>
-    <option value="Customers-Salespersons">
-      Customers & Salespersons Sheet
-    </option>
-    <option value="Sales">Sales Sheet</option>
-  </select>
+  <input type="file" id="chooseFile" accept=".xlsx"/>
   <br />
   <br />
-  <input type="file" id="chooseFile" accept=".xlsx" disabled />
+  <button type="button" id="extractData" disabled>Extract data and post to database</button>
   <br />
   <br />
-  <button type="button" id="extractData" disabled>Extract data</button>
+  <button type="button" id="getRecords">Get record and save object structure from database</button>
   <br />
   <br />
-  <button type="button" id="getRecords">Get records</button>
-  <br />
-  <br />
-  <button id="exportExcel">Export Excel</button>
+  <button id="exportExcel" disabled>Export excel of proper object structure</button>
 
 
   <script crossorigin="anonymous" type='text/javascript'
