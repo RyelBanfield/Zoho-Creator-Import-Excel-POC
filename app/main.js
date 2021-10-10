@@ -1,11 +1,13 @@
 import { flatten, unflatten } from './modules/flatten.js';
+import { exportExcel } from './modules/exportExcel.js';
 
 let submittedFile = null;
+let recordObject = {};
 
 const chooseFileBtn = document.getElementById('chooseFile');
 const extractDataBtn = document.getElementById('extractData');
-// const getRecordsBtn = document.getElementById('getRecords');
-// const exportExcelBtn = document.getElementById('exportExcel');
+const getRecordsBtn = document.getElementById('getRecords');
+const exportExcelBtn = document.getElementById('exportExcel');
 
 chooseFileBtn.addEventListener('change', (event) => {
   submittedFile = event.target.files[0];
@@ -60,20 +62,21 @@ extractDataBtn.addEventListener('click', () => {
   }
 });
 
-// let customerObject = {};
+getRecordsBtn.addEventListener('click', () => {
+  ZOHO.CREATOR.init().then(() => {
+    const config = {
+      reportName: 'Sale_Report',
+    };
 
-// getRecordsBtn.addEventListener('click', () => {
-//   ZOHO.CREATOR.init().then(() => {
-//     const customerConfig = {
-//       reportName: 'Customer_Report',
-//     };
+    ZOHO.CREATOR.API.getAllRecords(config).then((response) => {
+      console.log(flatten(response.data[0]));
+      recordObject = flatten(response.data[0]);
+    });
 
-//     ZOHO.CREATOR.API.getAllRecords(customerConfig).then((response) => {
-//       customerObject = flatten(response.data[0]);
-//     });
-//   });
-// });
+    exportExcelBtn.disabled = false;
+  });
+});
 
-// exportExcelBtn.addEventListener('click', () => {
-//   exportExcel('Customer', customerObject);
-// });
+exportExcelBtn.addEventListener('click', () => {
+  exportExcel('Sale', recordObject);
+});
