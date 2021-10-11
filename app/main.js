@@ -3,6 +3,7 @@ import { exportExcel } from './modules/exportExcel.js';
 
 let submittedFile = null;
 let recordObject = {};
+let report = null;
 
 const chooseFileBtn = document.getElementById('chooseFile');
 const extractDataBtn = document.getElementById('extractData');
@@ -40,6 +41,23 @@ extractDataBtn.addEventListener('click', () => {
               data: unflatten(excelData[sheet][row]),
             };
 
+            if (
+              Object.values(formData.data).some((key) => Array.isArray(key))
+            ) {
+              let deletedArray = {};
+              let tempObject = {};
+
+              for (let key in formData.data) {
+                if (Array.isArray(formData.data[key])) {
+                  deletedArray = { ...deletedArray, [key]: formData.data[key] };
+                } else {
+                  tempObject[key] = formData.data[key];
+                }
+              }
+
+              formData.data = { ...flatten(tempObject), ...deletedArray };
+            }
+
             console.log(sheet, formData.data);
 
             const config = {
@@ -63,20 +81,21 @@ extractDataBtn.addEventListener('click', () => {
 });
 
 getRecordsBtn.addEventListener('click', () => {
+  report = prompt('Enter the form name');
+
   ZOHO.CREATOR.init().then(() => {
     const config = {
-      reportName: 'Sale_Report',
+      reportName: `${report}_Report`,
     };
 
     ZOHO.CREATOR.API.getAllRecords(config).then((response) => {
-      console.log(flatten(response.data[0]));
+      console.log('As it comes from Zoho', response.data[0]);
       recordObject = flatten(response.data[0]);
+      exportExcelBtn.disabled = false;
     });
-
-    exportExcelBtn.disabled = false;
   });
 });
 
 exportExcelBtn.addEventListener('click', () => {
-  exportExcel('Sale', recordObject);
+  exportExcel(report, recordObject);
 });
