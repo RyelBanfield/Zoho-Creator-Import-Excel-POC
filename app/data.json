@@ -26,3 +26,20 @@
     ]
   }
 }
+
+
+formData.data = {
+  Date_field: '13-Oct-2021',
+  Customer: '4229008000000069179',
+  Salesperson: '4229008000000069191',
+  Line_Items: [
+    {
+      Product: '4229008000000067005',
+      Quantity: '1',
+    },
+    {
+      Product: '4229008000000077017',
+      Quantity: '2',
+    },
+  ],
+};

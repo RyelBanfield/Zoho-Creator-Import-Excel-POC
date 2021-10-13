@@ -6,10 +6,6 @@ let recordObject = {};
 let report = null;
 
 const chooseFileBtn = document.getElementById('chooseFile');
-const extractDataBtn = document.getElementById('extractData');
-const getRecordsBtn = document.getElementById('getRecords');
-const exportExcelBtn = document.getElementById('exportExcel');
-
 chooseFileBtn.addEventListener('change', (event) => {
   submittedFile = event.target.files[0];
   submittedFile === null
@@ -17,6 +13,7 @@ chooseFileBtn.addEventListener('change', (event) => {
     : (extractDataBtn.disabled = false);
 });
 
+const extractDataBtn = document.getElementById('extractData');
 extractDataBtn.addEventListener('click', () => {
   if (submittedFile) {
     const excelData = {};
@@ -80,6 +77,7 @@ extractDataBtn.addEventListener('click', () => {
   }
 });
 
+const getRecordsBtn = document.getElementById('getRecords');
 getRecordsBtn.addEventListener('click', () => {
   report = prompt('Enter the form name');
 
@@ -89,13 +87,14 @@ getRecordsBtn.addEventListener('click', () => {
     };
 
     ZOHO.CREATOR.API.getAllRecords(config).then((response) => {
-      console.log('As it comes from Zoho', response.data[0]);
+      console.log('Zoho Response', response.data);
       recordObject = flatten(response.data[0]);
       exportExcelBtn.disabled = false;
     });
   });
 });
 
+const exportExcelBtn = document.getElementById('exportExcel');
 exportExcelBtn.addEventListener('click', () => {
   exportExcel(report, recordObject);
 });
