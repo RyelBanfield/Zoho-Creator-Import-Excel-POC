@@ -1,10 +1,23 @@
-import { flatten, unflatten } from './modules/flatten.js';
+import { flatten } from './modules/flatten.js';
+import { extractData } from './modules/extractData.js';
 import { exportExcel } from './modules/exportExcel.js';
 
+let sheetType = null;
 let submittedFile = null;
 let recordObject = {};
 let report = null;
 
+// Set the type of excel sheet being used
+const sheetTypeDropdown = document.getElementById('sheet-type');
+sheetTypeDropdown.addEventListener('change', (event) => {
+  sheetType = event.target.value;
+  sheetType === ''
+    ? (chooseFileBtn.disabled = true)
+    : (chooseFileBtn.disabled = false);
+    console.log(sheetType);
+});
+
+// Get the file from the input
 const chooseFileBtn = document.getElementById('chooseFile');
 chooseFileBtn.addEventListener('change', (event) => {
   submittedFile = event.target.files[0];
@@ -13,70 +26,20 @@ chooseFileBtn.addEventListener('change', (event) => {
     : (extractDataBtn.disabled = false);
 });
 
+// Extract data from the file and post it to the database
 const extractDataBtn = document.getElementById('extractData');
 extractDataBtn.addEventListener('click', () => {
+  const lookupFields = prompt('How many lookup fields does this file contain?');
+  const lookupFieldsArray = [];
+  for (let i = 0; i < lookupFields; i++) {
+    lookupFieldsArray.push(prompt('Enter the name of the lookup field'));
+  }
   if (submittedFile) {
-    const excelData = {};
-    const fileReader = new FileReader();
-    fileReader.onload = (event) => {
-      const data = event.target.result;
-      const workbook = XLSX.read(data, {
-        type: 'binary',
-      });
-
-      workbook.SheetNames.forEach((sheet) => {
-        const row = XLSX.utils.sheet_to_row_object_array(
-          workbook.Sheets[sheet]
-        );
-        excelData[`${sheet}`] = row;
-      });
-
-      ZOHO.CREATOR.init().then(() => {
-        for (let sheet in excelData) {
-          for (let row in excelData[sheet]) {
-            let formData = {
-              data: unflatten(excelData[sheet][row]),
-            };
-
-            if (
-              Object.values(formData.data).some((key) => Array.isArray(key))
-            ) {
-              let deletedArray = {};
-              let tempObject = {};
-
-              for (let key in formData.data) {
-                if (Array.isArray(formData.data[key])) {
-                  deletedArray = { ...deletedArray, [key]: formData.data[key] };
-                } else {
-                  tempObject[key] = formData.data[key];
-                }
-              }
-
-              formData.data = { ...flatten(tempObject), ...deletedArray };
-            }
-
-            console.log(sheet, formData.data);
-
-            const config = {
-              formName: sheet,
-              data: formData,
-            };
-
-            ZOHO.CREATOR.API.addRecord(config).then((response) => {
-              if (response.code == 3000) {
-                console.log('Record added successfully');
-              } else {
-                console.log(response);
-              }
-            });
-          }
-        }
-      });
-    };
-    fileReader.readAsBinaryString(submittedFile);
+    extractData(submittedFile);
   }
 });
 
+// Get record and save object structure from database
 const getRecordsBtn = document.getElementById('getRecords');
 getRecordsBtn.addEventListener('click', () => {
   report = prompt('Enter the form name');
@@ -94,6 +57,7 @@ getRecordsBtn.addEventListener('click', () => {
   });
 });
 
+// Export the record to an excel file
 const exportExcelBtn = document.getElementById('exportExcel');
 exportExcelBtn.addEventListener('click', () => {
   exportExcel(report, recordObject);

@@ -9,22 +9,33 @@
 </head>
 
 <body>
-  <input type="file" id="chooseFile" accept=".xlsx" />
+  <select id="sheet-type">
+    <option value="">Select Excel Sheet Type</option>
+    <option value="Customers-Salespersons">
+      Customers & Salespersons Sheet
+    </option>
+    <option value="Sales">Sales Sheet</option>
+  </select>
+  <input type="file" id="chooseFile" accept=".xlsx" disabled />
   <br />
   <br />
-  <button type="button" id="extractData" disabled>Extract data and post to database</button>
+  <button type="button" id="extractData" disabled>
+    Extract data and post to database
+  </button>
   <br />
   <br />
-  <button type="button" id="getRecords">Get record and save object structure from database</button>
+  <button type="button" id="getRecords">
+    Get record and save object structure from database
+  </button>
   <br />
   <br />
-  <button id="exportExcel" disabled>Export excel of proper object structure</button>
+  <button id="exportExcel" disabled>Export excel of object structure</button>
 
-  <script crossorigin="anonymous" type='text/javascript'
+  <script crossorigin="anonymous" type="text/javascript"
     src="https://js.zohostatic.com/creator/widgets/version/1.0/widgetsdk-min.js"></script>
-  <script crossorigin="anonymous" type='text/javascript'
+  <script crossorigin="anonymous" type="text/javascript"
     src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.2/xlsx.full.min.js"></script>
-  <script crossorigin="anonymous" type='text/javascript'
+  <script crossorigin="anonymous" type="text/javascript"
     src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
   <script type="module" src="main.js"></script>
 </body>

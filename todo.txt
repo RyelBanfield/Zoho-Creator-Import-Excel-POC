@@ -1,0 +1,4 @@
+User selects the excel file which is preprogrammed to know the number of lookup fields.
+User uploads the excel file.
+The script will look at the columns that relate to the lookup fields
+  and will replace the values with the corresponding record IDs.
