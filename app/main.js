@@ -14,7 +14,6 @@ sheetTypeDropdown.addEventListener('change', (event) => {
   sheetType === ''
     ? (chooseFileBtn.disabled = true)
     : (chooseFileBtn.disabled = false);
-    console.log(sheetType);
 });
 
 // Get the file from the input
@@ -29,14 +28,7 @@ chooseFileBtn.addEventListener('change', (event) => {
 // Extract data from the file and post it to the database
 const extractDataBtn = document.getElementById('extractData');
 extractDataBtn.addEventListener('click', () => {
-  const lookupFields = prompt('How many lookup fields does this file contain?');
-  const lookupFieldsArray = [];
-  for (let i = 0; i < lookupFields; i++) {
-    lookupFieldsArray.push(prompt('Enter the name of the lookup field'));
-  }
-  if (submittedFile) {
-    extractData(submittedFile);
-  }
+  extractData(sheetType, submittedFile);
 });
 
 // Get record and save object structure from database
