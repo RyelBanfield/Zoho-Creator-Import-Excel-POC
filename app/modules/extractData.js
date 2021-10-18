@@ -78,7 +78,6 @@ export const extractData = (sheetType, submittedFile) => {
                 break;
             }
           };
-
           asyncSwitch(sheetType);
         }
       }

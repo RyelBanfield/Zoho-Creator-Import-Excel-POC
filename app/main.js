@@ -4,8 +4,8 @@ import { exportExcel } from './modules/exportExcel.js';
 
 let sheetType = null;
 let submittedFile = null;
-let recordObject = {};
 let report = null;
+let recordObject = {};
 
 // Set the type of excel sheet being used
 const sheetTypeDropdown = document.getElementById('sheet-type');
